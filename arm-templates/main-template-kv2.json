@@ -25,6 +25,10 @@
             "type": "string",
             "defaultValue": "[utcNow()]"
         },
+        "HostPoolName": {
+            "type": "string",
+            "defaultValue": "poolA"
+        },
         "host-pool-resource-group": {
             "type": "string",
             "defaultValue": "aib-wvd-hostpool-rg",
@@ -59,6 +63,11 @@
             "resourceGroup": "[parameters('host-pool-resource-group')]",
             "properties": {
                 "mode": "Incremental",
+                "parameters": {
+                    "hostpool-name": {
+                        "value": "[parameters('HostPoolName')]"
+                    }
+                },
                 "templateLink": {
                     //"uri":"https://raw.githubusercontent.com/mariuszdotnet/azure-image-builder-wvd/master/arm-templates/desktopvirtualization-hostpools.json",
                     "uri": "[concat(variables('templateURI'),'desktopvirtualization-hostpools.json',parameters('artifactsLocationSasToken'))]",
@@ -164,6 +173,9 @@
             "properties": {
                 "mode": "Incremental",
                 "parameters": {
+                    "host-pool-name": {
+                        "value": "[parameters('HostPoolName')]"
+                    },
                     //"host-pool-token":{"value": "[parameters('host-pool-token')]"}
                     "host-pool-token": { "value": "[reference(variables('hostpool-token-deployment-name')).outputs.hostpooltoken.value]" }
                 },

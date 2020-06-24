@@ -14,6 +14,7 @@ $TargetResourceGroup = $Env:SESSIONHOSTRESOURCEGROUPNAME
 $Location = $Env:LOCATION
 $SubscriptionId = $Env:SUBSCRIPTIONID
 $TargetWorkspaceResourceGroup = $Env:WORKSPACERESOURCEGROUPNAME
+$HostPoolName = $Env:HOSTPOOLNAME
 
 $rg = Get-AzResourceGroup -Name $TargetResourceGroup -ErrorAction SilentlyContinue
 if (!$rg) {
@@ -34,4 +35,5 @@ New-AzResourceGroupDeployment -ResourceGroupName $TargetResourceGroup `
     -VaultResourceGroupName 'Azureminilab-Lighthouse' `
     -VaultSubscriptionId $SubscriptionId `
     -host-pool-resource-group $TargetWorkspaceResourceGroup `
+    -HostPoolName $HostPoolName `
     -artifactsLocationSasToken $secureToken
