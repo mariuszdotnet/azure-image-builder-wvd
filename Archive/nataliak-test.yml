@@ -27,7 +27,7 @@ variables:
   - name: keyVaultName
     value: SBX-CANC-WVD-DEV-oxn-KV
   - name: keyVaultRGName
-    value: -POD01
+    value: Azureminilab-WVDRoot
   - name: podResourceGroup
     value: Azureminilab-WVDRoot
 
