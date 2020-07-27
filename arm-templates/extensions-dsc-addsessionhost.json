@@ -21,7 +21,7 @@
             "metadata": {
                 "description": "The base URI where artifacts required by this template are located."
             },
-            "defaultValue": "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration.zip"
+            "defaultValue": "https://wvdportalstorageblob.blob.core.windows.net/galleryartifacts/Configuration_7-20-2020.zip"
         },
         "host-pool-name": {
             "type": "string",
@@ -38,7 +38,9 @@
         }
     },
     "functions": [],
-    "variables": {},
+    "variables": {
+        "dseConfigurationFunction": "[concat(substring(parameters('artifacts-location'), add(1, lastIndexOf(parameters('artifacts-location'), '/'))),'\\', 'AddSessionHost')]"
+    },
     "resources": [
         {
             "apiVersion": "2018-10-01",
@@ -58,7 +60,7 @@
                 "protectedSettings": {},
                 "settings": {
                     "modulesUrl": "[parameters('artifacts-location')]",
-                    "configurationFunction": "Configuration.ps1\\AddSessionHost",
+                    "configurationFunction": "[variables('dseConfigurationFunction')]",
                     "properties": {
                         "hostPoolName": "[parameters('host-pool-name')]",
                         "registrationInfoToken": "[parameters('host-pool-token')]"
