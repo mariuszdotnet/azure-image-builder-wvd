@@ -36,7 +36,7 @@
             {
                 "type": "File",
                 "name": "Download Persona Apps",
-                "sourceUri":"URL",
+                "sourceUri":"https://raw.githubusercontent.com/mariuszdotnet/azure-image-builder-wvd/master/misc/Customapps.ps1",
                 "destination": "c:\\temp\\Developer\\CustomApps.ps1",
                 "sha256Checksum": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
             },
