@@ -37,8 +37,7 @@
                 "type": "File",
                 "name": "Download Persona Apps",
                 "sourceUri":"https://raw.githubusercontent.com/mariuszdotnet/azure-image-builder-wvd/master/misc/Customapps.ps1",
-                "destination": "c:\\temp\\Developer\\CustomApps.ps1",
-                "sha256Checksum": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+                "destination": "c:\\temp\\Developer\\CustomApps.ps1"
             },
             {
                 "type": "PowerShell",
@@ -65,7 +64,6 @@
             {
                 "type": "PowerShell",
                 "name": "Delete temp directory",
-                "runElevated": true,
                 "inline": [
                     "rmdir /q /s c:\\temp\\Developer"
                 ]
