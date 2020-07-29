@@ -65,7 +65,7 @@
             {
                 "type": "PowerShell",
                 "name": "Delete temp directory",
-                "runElevated": "true",
+                "runElevated": true,
                 "inline": [
                     "rmdir /q /s c:\\temp\\Developer"
                 ]
