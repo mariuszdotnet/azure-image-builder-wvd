@@ -25,7 +25,53 @@
             "sku": "19h2-evd-o365pp",
             "version": "latest"
         },
-        "customize": [],
+        "customize": [
+            {
+                "type": "PowerShell",
+                "name": "Create temp directory",
+                "inline": [
+                    "mkdir -p c:\\temp\\Developer"
+                ]
+            },
+            {
+                "type": "File",
+                "name": "Download Persona Apps",
+                "sourceUri":"URL",
+                "destination": "c:\\temp\\Developer\\CustomApps.ps1",
+                "sha256Checksum": "E3B0C44298FC1C149AFBF4C8996FB92427AE41E4649B934CA495991B7852B855"
+            },
+            {
+                "type": "PowerShell",
+                "name": "Install Persona Apps",
+                "inline": [
+                    "powershell.exe -file c:\\temp\\Developer\\CustomApps.ps1"
+                ]
+            },
+            {
+                "type": "WindowsUpdate",
+                "searchCriteria": "IsInstalled=0",
+                "filters": [
+                    "exclude:$_.Title -like '*Preview*'",
+                    "include:$true"
+                ],
+                "updateLimit": 200
+            },
+            {
+                "type": "WindowsRestart",
+                "restartCommand": "shutdown /r /f /t 0", 
+                "restartCheckCommand": "echo Azure-Image-Builder-Restarted-the-VM  > c:\\buildArtifacts\\azureImageBuilderRestart.txt",
+                "restartTimeout": "30m"
+            },
+            {
+                "type": "PowerShell",
+                "name": "Delete temp directory",
+                "runElevated": "true",
+                "inline": [
+                    "rmdir /q /s c:\\temp\\Developer"
+                ]
+            }
+
+        ],
         "distribute": [
             {
                 "type": "SharedImage",
