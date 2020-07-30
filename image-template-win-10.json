@@ -49,12 +49,13 @@
             {
                 "type": "WindowsRestart",
                 "restartCommand": "shutdown /r /f /t 0", 
-                "restartCheckCommand": "echo Azure-Image-Builder-Restarted-the-VM  > c:\\buildArtifacts\\azureImageBuilderRestart.txt",
+                "restartCheckCommand": "echo Azure-Image-Builder-Restarted-the-VM  > c:\\temp\\azureImageBuilderRestart.txt",
                 "restartTimeout": "30m"
             },
             {
                 "type": "PowerShell",
                 "name": "Delete temp directory",
+                "runElevated": "true", 
                 "inline": [
                     "rmdir /q /s c:\\temp\\Developer"
                 ]
