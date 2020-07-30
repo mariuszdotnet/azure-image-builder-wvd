@@ -57,7 +57,7 @@
                 "name": "Delete temp directory",
                 "runElevated": true, 
                 "inline": [
-                    "rmdir /q /s c:\\temp\\Developer"
+                    "Remove-Item 'c:\\temp\\Developer' -Recurse"
                 ]
             }
 
