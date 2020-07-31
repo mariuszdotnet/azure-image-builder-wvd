@@ -791,8 +791,12 @@
                   "id": "08b17c9e-d07d-49ff-956a-5332b72a301f",
                   "version": "KqlParameterItem/1.0",
                   "name": "SepagoHostPool",
-                  "type": 1,
+                  "type": 5,
                   "query": "ITPC_CTX_Process_CL | distinct DesktopGroup_s | order by HostPool=DesktopGroup_s",
+                  "value": "AZUREMINILAB-WVDROOT.POOLB",
+                  "typeSettings": {
+                    "additionalResourceOptions": []
+                  },
                   "timeContext": {
                     "durationMs": 86400000
                   },
@@ -1268,8 +1272,12 @@
                   "id": "b794ba59-a446-434c-b9a8-bf7e20095212",
                   "version": "KqlParameterItem/1.0",
                   "name": "HostPool",
-                  "type": 1,
+                  "type": 5,
                   "query": "ITPC_CTX_Process_CL | distinct DesktopGroup_s | order by HostPool=DesktopGroup_s",
+                  "value": "AZUREMINILAB-WVDROOT.POOLB",
+                  "typeSettings": {
+                    "additionalResourceOptions": []
+                  },
                   "timeContext": {
                     "durationMs": 86400000
                   },
@@ -1291,7 +1299,7 @@
               "size": 0,
               "title": "Top unique sessions by host (#)",
               "timeContext": {
-                "durationMs": 0
+                "durationMs": 2592000000
               },
               "timeContextFromParameter": "TimeRange",
               "queryType": 0,
@@ -1309,7 +1317,7 @@
               "size": 0,
               "title": "Less unique sessions by host (#)",
               "timeContext": {
-                "durationMs": 0
+                "durationMs": 2592000000
               },
               "timeContextFromParameter": "TimeRange",
               "queryType": 0,
@@ -1493,7 +1501,7 @@
               "noDataMessage": "No errors collected in the specified time range",
               "noDataMessageStyle": 4,
               "timeContext": {
-                "durationMs": 0
+                "durationMs": 2592000000
               },
               "timeContextFromParameter": "TimeRange",
               "showExportToExcel": true,
@@ -1539,7 +1547,7 @@
               "size": 1,
               "title": "Errors raised by time",
               "timeContext": {
-                "durationMs": 0
+                "durationMs": 2592000000
               },
               "timeContextFromParameter": "TimeRange",
               "queryType": 0,
@@ -1610,7 +1618,7 @@
                   "type": 1,
                   "description": "Please enter the username you would like to explore",
                   "isRequired": true,
-                  "value": "wvd9",
+                  "value": "e95",
                   "timeContext": {
                     "durationMs": 0
                   },
@@ -2518,10 +2526,14 @@
                   "id": "9b0d1cba-dd7f-49b5-96f5-d5a873ab42ba",
                   "version": "KqlParameterItem/1.0",
                   "name": "SepagoHostPool",
-                  "type": 1,
+                  "type": 5,
                   "query": "ITPC_CTX_Process_CL | distinct DesktopGroup_s | order by HostPool=DesktopGroup_s",
+                  "value": "AZUREMINILAB-WVDROOT.POOLA",
+                  "typeSettings": {
+                    "additionalResourceOptions": []
+                  },
                   "timeContext": {
-                    "durationMs": 0
+                    "durationMs": 2592000000
                   },
                   "timeContextFromParameter": "TimeRange",
                   "queryType": 0,
@@ -2691,7 +2703,7 @@
               "size": 0,
               "title": "Page file usage (%)",
               "timeContext": {
-                "durationMs": 0
+                "durationMs": 2592000000
               },
               "timeContextFromParameter": "TimeRange",
               "queryType": 0,
@@ -2736,8 +2748,12 @@
                   "id": "f20a96d0-55f9-4d84-ad74-19e1919a1f2d",
                   "version": "KqlParameterItem/1.0",
                   "name": "SepagoHostPool",
-                  "type": 1,
+                  "type": 5,
                   "query": "ITPC_CTX_Process_CL | distinct DesktopGroup_s | order by HostPool=DesktopGroup_s",
+                  "value": "AZUREMINILAB-WVDROOT.POOLB",
+                  "typeSettings": {
+                    "additionalResourceOptions": []
+                  },
                   "timeContext": {
                     "durationMs": 86400000
                   },
@@ -2758,7 +2774,7 @@
               "query": "let IgnorePath=dynamic({_ignorePathAndApps});\r\nITPC_CTX_Process_CL | where  TimeGenerated {TimeRange} and DesktopGroup_s==\"{SepagoHostPool}\" and UserName_s !=\"\" and (ExecutablePath_s has_any (IgnorePath))==false | summarize Count=dcount(UserName_s) by Application=Caption_s | order by Count desc",
               "size": 0,
               "timeContext": {
-                "durationMs": 0
+                "durationMs": 2592000000
               },
               "timeContextFromParameter": "TimeRange",
               "queryType": 0,
@@ -2776,7 +2792,7 @@
               "size": 0,
               "title": "Distinct count of application by users",
               "timeContext": {
-                "durationMs": 0
+                "durationMs": 2592000000
               },
               "timeContextFromParameter": "TimeRange",
               "queryType": 0,
@@ -2794,7 +2810,7 @@
               "size": 0,
               "title": "Application CPU consumption (%*min)",
               "timeContext": {
-                "durationMs": 0
+                "durationMs": 2592000000
               },
               "timeContextFromParameter": "TimeRange",
               "queryType": 0,
@@ -2812,7 +2828,7 @@
               "size": 0,
               "title": "Application Memory consumption (Bytes*min)",
               "timeContext": {
-                "durationMs": 0
+                "durationMs": 2592000000
               },
               "timeContextFromParameter": "TimeRange",
               "queryType": 0,
@@ -2826,7 +2842,7 @@
             "type": 3,
             "content": {
               "version": "KqlItem/1.0",
-              "query": "ITPC_CTX_Application_CL | where TimeGenerated {TimeRange} and DesktopGroup_s==\"{SepagoHostPool}\" and Event_s == \"crashed\" | summarize AggregatedValue = count() by Name_s | order by AggregatedValue desc",
+              "query": "ITPC_CTX_Application_CL | where TimeGenerated {TimeRange} and Event_s == \"crashed\" //| summarize AggregatedValue = count() by Name_s | order by AggregatedValue desc",
               "size": 1,
               "title": "Crashed application (#)",
               "timeContext": {
