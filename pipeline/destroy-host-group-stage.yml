@@ -1,6 +1,7 @@
 parameters:
   - name: podId
     default: ''
+  - name: personaId
   - name: targetContainer
   - name: podResourceGroup
 

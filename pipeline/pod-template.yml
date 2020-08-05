@@ -77,5 +77,6 @@ stages:
   - template: destroy-host-group-stage.yml
     parameters:
       podId: ${{ parameters.podId }}
+      personaId: ${{ parameters.personaId }}
       targetContainer: ${{ parameters.targetContainer }}
       podResourceGroup: ${{ parameters.podResourceGroup }}
