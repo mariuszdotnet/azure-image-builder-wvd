@@ -1,0 +1,46 @@
+parameters:
+  - name: podId
+    default: ''
+  - name: targetContainer
+  - name: podResourceGroup
+
+stages:
+  - stage: Cleanup_Host_VMs_${{ parameters.podId }}
+    dependsOn: Swap_Users_${{ parameters.podId }}
+    variables:
+      - template: vars.yml
+      - ${{ if eq( parameters.targetContainer, 'blue') }}:
+        - name: hostPoolName
+          value: $[stageDependencies.DeployPod_${{ parameters.podId }}.Deploy_ARM_Template.outputs['Output.green-hostPoolName']]
+        - name: vmResourceGroup
+          value: ${{ format('{0}-{1}', parameters.podResourceGroup, 'GREEN') }}
+      - ${{ if eq( parameters.targetContainer, 'green') }}:
+        - name: hostPoolName
+          value: $[stageDependencies.DeployPod_${{ parameters.podId }}.Deploy_ARM_Template.outputs['Output.blue-hostPoolName']]
+        - name: vmResourceGroup
+          value: ${{ format('{0}-{1}', parameters.podResourceGroup, 'BLUE') }}
+    jobs:
+      - deployment: Cleanup_Host_VMs
+        displayName: Cleanup Host VMs
+        environment: ${{ format('WVD-{0}-{1}', parameters.personaId, parameters.podId)}}
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+                  displayName: Clone Git Repo
+                - task: AzurePowerShell@4
+                  displayName: Drain Hosts Script
+                  inputs:
+                    pwsh: true
+                    azureSubscription: ${{ variables.azureConnectionName }}
+                    scriptType: filePath
+                    azurePowerShellVersion: "LatestVersion"
+                    scriptPath: $(Build.Repository.LocalPath)\misc\Drain_RemoveHosts.ps1
+                    scriptArguments: -HostPoolName $(hostPoolName) -ResourceGroupName ${{ parameters.podResourceGroup }} -SubscriptionId $(subscriptionId)
+                - task: AzureResourceGroupDeployment@2
+                  name: Delete_Resource_Group
+                  displayName: Delete $(vmResourceGroup)
+                  inputs:
+                    action: deleteRG
+                    resourceGroupName: $(vmResourceGroup)
