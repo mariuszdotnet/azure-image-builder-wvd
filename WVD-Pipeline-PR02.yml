@@ -27,8 +27,8 @@ extends:
   parameters:
     personaId: PR02
     personaName: Developers
-    primaryRegion: canadacentral
-    primaryRegionCode: CACN
+    primaryRegion: westus2
+    primaryRegionCode: WUS2
     image: WIN10
     targetContainer: ${{ parameters.targetContainer }}
     pods:

@@ -1,5 +1,5 @@
 variables:
-  - group: nataliak
+  - group: wvd-devops
 #  - name: storageAccountName
 #    value: azminlandevops
 
@@ -7,9 +7,9 @@ variables:
 #    value: aib-devops-rg
 
   - name: azureConnectionName
-    value: AzDevOPS2
+    value: AzDevOPS
   - name: SPNApplicationId
-    value: 2f49f618-4e03-46ab-9666-37f7fe11fa96
+    value: 31e6399b-491f-4a38-acdb-38aeb0dfcbbd
 
 #  - name: subscriptionId
 #    value: "1965c25a-b7fd-48b5-a393-c9e785c1c4d9"
