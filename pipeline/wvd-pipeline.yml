@@ -14,6 +14,7 @@ parameters:
     values:
       - canadacentral
       - canadaeast
+      - westus2
     default: canadacentral
 
   - name: primaryRegionCode
@@ -22,6 +23,7 @@ parameters:
     values:
       - CACN
       - CAET
+      - WUS2
     default: CACN
 
   - name: image
