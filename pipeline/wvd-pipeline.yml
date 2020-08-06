@@ -56,6 +56,7 @@ parameters:
       - DEV
       - PRD
       - WVD
+      - TGD
 
 stages:
   - template: prep-stage.yml
