@@ -80,3 +80,4 @@ stages:
         targetRegion: ${{ parameters.primaryRegion }}
         targetContainer: ${{ parameters.targetContainer }}
         regionCode: ${{ parameters.primaryRegionCode }}
+        environment: ${{ parameters.environment }}

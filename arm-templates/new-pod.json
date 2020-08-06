@@ -7,12 +7,6 @@
         },
         "environment": {
             "type": "string",
-            "allowedValues": [
-                "SBX",
-                "DEV",
-                "PRD",
-                "WVD"
-            ],
             "defaultValue": "SBX"
         },
         "persona": {
@@ -200,7 +194,7 @@
             "name": "[variables('secrets-deployment')]",
             "resourceGroup": "[resourceGroup().name]",
             "dependsOn": [
-                "[parameters('keyVaultName')]", 
+                "[parameters('keyVaultName')]",
                 "[variables('netapp-volume-deployment')]"
             ],
             "properties": {
@@ -249,8 +243,8 @@
                                     "secretValue": "[variables('netapp-volume-name')]"
                                 },
                                 {
-                                    "secretName":"netappshare",
-                                    "secretValue":"[concat('\\\\',reference(variables('netapp-volume-deployment')).outputs.NetAppVolumeFQDN.value,'\\',variables('netapp-volume-name'))]"
+                                    "secretName": "netappshare",
+                                    "secretValue": "[concat('\\\\',reference(variables('netapp-volume-deployment')).outputs.NetAppVolumeFQDN.value,'\\',variables('netapp-volume-name'))]"
                                 },
 
                                 {

@@ -35,11 +35,6 @@ parameters:
     displayName: Environment
     type: string
     default: WVD
-    values:
-      - SBX
-      - DEV
-      - PRD
-      - WVD
 
   - name: regionCode
     type: string
