@@ -124,7 +124,7 @@
         "extensions-dsc-addsessionhost-template": "[concat(uri(variables('baseUri'), 'extensions-dsc-addsessionhost.json'), variables('sasToken'))]",
 
         "hostpool-token-deployment-name": "[concat('get-hostpool-token-',parameters('utc-value'))]",
-        "rdsh-prefix": "[concat('WVD',variables('vmRegionCode'),parameters('personaID'),'p',parameters('podID'),'-')]",
+        "rdsh-prefix": "[concat('WVD',variables('vmRegionCode'),parameters('personaID'), replace(parameters('podID'),'POD', 'P'),'-')]",
         "availability-set-deployment-name": "[concat('compute-availabilitysets-',parameters('utc-value'))]",
         "network-iterfaces-deployment-name": "[concat('network-interfaces-',parameters('utc-value'))]",
         "virtual-machines-deployment-name": "[concat('virtual-machines-',parameters('utc-value'))]",
