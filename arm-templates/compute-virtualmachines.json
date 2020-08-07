@@ -180,7 +180,6 @@
                 "type": "[variables('daExtensionType')]",
                 "typeHandlerVersion": "[variables('daExtensionVersion')]",
                 "autoUpgradeMinorVersion": true,
-                "enableAutomaticUpgrade": true,
                 "settings": {}
             }
         },
