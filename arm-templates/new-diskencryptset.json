@@ -10,12 +10,6 @@
         },
         "environment": {
             "type": "string",
-            "allowedValues": [
-                "SBX",
-                "DEV",
-                "PRD",
-                "WVD"
-            ],
             "defaultValue": "SBX"
         },
         "utc-value": {
@@ -45,7 +39,8 @@
             "canadacentral": "CANC",
             "canadaeast": "CAEA",
             "eastus2": "USE2",
-            "centralus": "USN"
+            "centralus": "USN",
+            "westus2": "USW2"
         },
         "tenantId": "[subscription().tenantId]",
         "key-vault-deployment-name": "[concat('add-key-vault-',parameters('utc-value'))]",
@@ -53,8 +48,8 @@
         "identityName": "[concat(parameters('PersonaName'),'-diskencrypt-mi')]",
         "bootstrapRoleAssignmentId": "[guid(concat(resourceGroup().id, 'contributor', variables('identityName')))]",
         "contributorRoleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', 'b24988ac-6180-42a0-ab88-20f7382dd24c')]",
-        "disk-encrypt-set-deployment-name": "[concat(parameters('PersonaName'),'-disk-encrypt-set-',parameters('utc-value'))]",
-        "disk-encrypt-key-name": "[concat(parameters('PersonaName'),'-disk-encrypt-key')]",
+        "disk-encrypt-set-deployment-name": "[concat(parameters('environment'), '-', parameters('PersonaName'),'-disk-encrypt-set-',parameters('utc-value'))]",
+        "disk-encrypt-key-name": "[concat(parameters('environment'), '-', parameters('PersonaName'),'-',variables('regionCode')[parameters('KeyVaultlocation')],'-DES')]",
         "templateURI": "[concat(parameters('_artifactsLocation'),'templates/arm-templates/')]"
     },
     "resources": [
