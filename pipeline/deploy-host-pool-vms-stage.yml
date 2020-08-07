@@ -18,12 +18,10 @@ stages:
       ${{ if eq( parameters.targetContainer, 'blue') }}:
         hostPoolName: $[stageDependencies.DeployPod_${{ parameters.podId }}.Deploy_ARM_Template.outputs['Output.blue-hostPoolName']]
         subnetId: blue-subnet-id
-        netappShare: netapp-blue
 
       ${{ if eq( parameters.targetContainer, 'green') }}:
         hostPoolName: $[stageDependencies.DeployPod_${{ parameters.podId }}.Deploy_ARM_Template.outputs['Output.green-hostPoolName']]
         subnetId: green-subnet-id
-        netappShare: netapp-green
     jobs:
       - template: deploy-template.yml
         parameters:
@@ -36,7 +34,6 @@ stages:
             - VaultSubscriptionId $(subscriptionId)
             - useSharedImage $(useSharedImage)
             - subnetId $(subnetId)
-            - netappshare $(netappShare)
             - desId $(diskEncryptKeyResourceId)
             - personaID ${{ parameters.personaId }}
             - podID ${{ parameters.podId }}

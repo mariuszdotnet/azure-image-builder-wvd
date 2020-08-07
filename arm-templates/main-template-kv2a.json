@@ -52,9 +52,6 @@
         "subnetid": {
             "type": "string"
         },
-        "netappshare": {
-            "type": "string"
-        },
         "instance-count": {
             "type": "int",
             "metadata": {
@@ -270,7 +267,7 @@
                             "keyVault": {
                                 "id": "[resourceId(parameters('VaultSubscriptionId'), parameters('VaultResourceGroupName'), 'Microsoft.KeyVault/vaults', parameters('VaultName'))]"
                             },
-                            "secretName": "[parameters('netappshare')]"
+                            "secretName": "netappshare"
                         }
                     },
                     "rdsh-prefix": {
