@@ -60,7 +60,7 @@
                 "protectedSettings": {},
                 "settings": {
                     "modulesUrl": "[parameters('artifacts-location')]",
-                    "configurationFunction": "[variables('dseConfigurationFunction')]",
+                    "configurationFunction": "Configuration.ps1\\AddSessionHost",
                     "properties": {
                         "hostPoolName": "[parameters('host-pool-name')]",
                         "registrationInfoToken": "[parameters('host-pool-token')]"
