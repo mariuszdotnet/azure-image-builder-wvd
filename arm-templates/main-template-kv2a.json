@@ -32,11 +32,11 @@
             "type": "string",
             "defaultValue": "/subscriptions/1965c25a-b7fd-48b5-a393-c9e785c1c4d9/resourcegroups/azureminilab-la/providers/microsoft.operationalinsights/workspaces/azureminilab2019"
         },
-        "personaID":{
-            "type":"string"
+        "personaID": {
+            "type": "string"
         },
         "podID": {
-            "type":"string"
+            "type": "string"
         },
         "HostPoolName": {
             "type": "string",
@@ -105,7 +105,9 @@
             "canadacentral": "CC",
             "canadaeast": "CE",
             "eastus2": "U2",
-            "centralus": "UC"
+            "centralus": "UC",
+            "westus2": "W2",
+            "westus": "UW"
         },
         "vmRegionCode": "[variables('regionCode')[resourceGroup().location]]",
 
