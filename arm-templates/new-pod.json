@@ -78,6 +78,34 @@
             "metadata": {
                 "description": "Subnet Resource ID to attach NetApp Volume"
             }
+        },
+        "domain": {
+            "type": "string",
+            "metadata": {
+                "description": "AD Domain to join"
+            },
+            "defaultValue": "azureminilab.com"
+        },
+        "domainAdminAccount": {
+            "type": "string",
+            "metadata": {
+                "description": "Domain Admin Account"
+            },
+            "defaultValue": "azadmin@azureminilab.com"
+        },
+        "domainAdminPassword": {
+            "type": "securestring",
+            "metadata": {
+                "description": "Domain Admin Account Password"
+            },
+            "defaultValue": "!R37fallacy1505"
+        },
+        "domainOUPath": {
+            "type": "string",
+            "metadata": {
+                "description": "Domain Computers OU Path"
+            },
+            "defaultValue": "CN=Computers"
         }
     },
     "functions": [],
@@ -152,22 +180,22 @@
                             "secrets": [
                                 {
                                     "secretName": "admin-account-password",
-                                    "secretValue": "!R37fallacy1505",
+                                    "secretValue": "[parameters('domainAdminPassword')]",
                                     "contentType": "secretValue"
                                 },
                                 {
                                     "secretName": "ou-path",
-                                    "secretValue": "CN=Computers",
+                                    "secretValue": "[parameters('domainOUPath')]",
                                     "contentType": "secretValue"
                                 },
                                 {
                                     "secretName": "domain",
-                                    "secretValue": "azureminilab.com",
+                                    "secretValue": "[parameters('domain')]",
                                     "contentType": "secretValue"
                                 },
                                 {
                                     "secretName": "admin-account-user",
-                                    "secretValue": "azadmin@azureminilab.com",
+                                    "secretValue": "[parameters('domainAdminAccount')]",
                                     "contentType": "secretValue"
                                 }
                             ]

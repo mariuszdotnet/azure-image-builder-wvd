@@ -38,4 +38,7 @@ stages:
             - NetAppResourceGroup $(NetAppResourceGroup)
             - NetAppAccountName $(NetAppAccountName)
             - NetAppSubnetId $(NetAppSubnetId)
+            - domain $(domain)
+            - domainAdminAccount $(domainAdminAccount)
+            - domainAdminPassword $(domainAdminPassword)
 
