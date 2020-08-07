@@ -313,6 +313,14 @@
                             "secretName": "admin-account-user"
                         }
                     },
+                    "domain": {
+                        "reference": {
+                            "keyVault": {
+                                "id": "[resourceId(parameters('VaultSubscriptionId'), parameters('VaultResourceGroupName'), 'Microsoft.KeyVault/vaults', parameters('VaultName'))]"
+                            },
+                            "secretName": "domain"
+                        }
+                    },
                     "rdsh-prefix": {
                         "value": "[variables('rdsh-prefix')]"
                     },
