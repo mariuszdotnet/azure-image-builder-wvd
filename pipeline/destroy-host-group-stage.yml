@@ -8,7 +8,9 @@ parameters:
 stages:
   - stage: Cleanup_Host_VMs_${{ parameters.podId }}
     displayName: Cleanup ${{ parameters.podId }}
-    dependsOn: Swap_Users_${{ parameters.podId }}
+    dependsOn: 
+      - Swap_Users_${{ parameters.podId }}
+      - DeployPod_${{ parameters.podId }}
     variables:
       - template: vars.yml
       - ${{ if eq( parameters.targetContainer, 'blue') }}:
