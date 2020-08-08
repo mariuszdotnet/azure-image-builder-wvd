@@ -51,12 +51,10 @@ parameters:
     displayName: Environment
     type: string
     default: WVD
-    values:
-      - SBX
-      - DEV
-      - PRD
-      - WVD
-      - TGD
+
+  - name: swapUsers
+    type: boolean
+    default: true
 
 stages:
   - template: prep-stage.yml
@@ -81,3 +79,4 @@ stages:
         targetContainer: ${{ parameters.targetContainer }}
         regionCode: ${{ parameters.primaryRegionCode }}
         environment: ${{ parameters.environment }}
+        swapUsers: ${{ parameters.swapUsers }}

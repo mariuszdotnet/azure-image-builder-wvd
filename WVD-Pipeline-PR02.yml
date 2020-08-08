@@ -19,6 +19,11 @@ parameters:
       - BLUE
       - GREEN
 
+  - name: swapUsers
+    displayName: Swap Users
+    type: boolean
+    default: true
+
 variables:
   - template: pipeline/vars.yml
 
@@ -32,6 +37,7 @@ extends:
     image: WIN10
     targetContainer: ${{ parameters.targetContainer }}
     environment: TGD
+    swapUsers: ${{ parameters.swapUsers }}
     pods:
       - podId: POD01
         numberOfVMs: 3

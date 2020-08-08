@@ -39,6 +39,10 @@ parameters:
   - name: regionCode
     type: string
 
+  - name: swapUsers
+    type: boolean
+    default: true
+
 stages:
 
   - template: deploy-pod-stage.yml
@@ -62,16 +66,17 @@ stages:
       targetRegion: ${{ parameters.targetRegion }}
       targetContainer: ${{ parameters.targetContainer }}
 
-  - template: swap-users-stage.yml
-    parameters:
-      podId: ${{ parameters.podId }}
-      personaId: ${{ parameters.personaId }}
-      keyVaultName: ${{ format('{0}-KVL-{1}-{2}', parameters.environment, parameters.personaId, parameters.podId) }}
-      podResourceGroup: ${{ parameters.podResourceGroup }}
+  - ${{ if parameters.swapUsers }}:
+    - template: swap-users-stage.yml
+      parameters:
+        podId: ${{ parameters.podId }}
+        personaId: ${{ parameters.personaId }}
+        keyVaultName: ${{ format('{0}-KVL-{1}-{2}', parameters.environment, parameters.personaId, parameters.podId) }}
+        podResourceGroup: ${{ parameters.podResourceGroup }}
 
-  - template: destroy-host-group-stage.yml
-    parameters:
-      podId: ${{ parameters.podId }}
-      personaId: ${{ parameters.personaId }}
-      targetContainer: ${{ parameters.targetContainer }}
-      podResourceGroup: ${{ parameters.podResourceGroup }}
+    - template: destroy-host-group-stage.yml
+      parameters:
+        podId: ${{ parameters.podId }}
+        personaId: ${{ parameters.personaId }}
+        targetContainer: ${{ parameters.targetContainer }}
+        podResourceGroup: ${{ parameters.podResourceGroup }}
