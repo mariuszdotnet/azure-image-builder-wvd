@@ -64,7 +64,7 @@
             "metadata": {
                 "description": "The size of the session host VMs."
             },
-            "defaultValue": "Standard_A2"
+            "defaultValue": "Standard_A1_v2"
         },
         "useSharedImage": {
             "type": "bool",
