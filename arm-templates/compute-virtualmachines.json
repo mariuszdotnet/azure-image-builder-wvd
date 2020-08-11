@@ -21,7 +21,7 @@
             "metadata": {
                 "description": "The size of the session host VMs."
             },
-            "defaultValue": "Standard_A2"
+            "defaultValue": "Standard_D1_v2"
         },
         "administrator-account-username": {
             "type": "string",
