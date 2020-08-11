@@ -70,6 +70,10 @@
             "type": "bool",
             "defaultValue": true
         },
+        "enableAvSets":{
+            "type": "bool",
+            "defaultValue":false 
+        },
         "shared-image-gallery-rg": {
             "type": "string",
             "metadata": {
@@ -111,7 +115,6 @@
         "templateUri": "[deployment().properties.templateLink.uri]",
         "sasToken": "[substring(variables('templateUri'), indexOf(variables('templateUri'), '?'))]",
         "baseUri": "[substring(variables('templateUri'), 0, add(lastIndexOf(variables('templateUri'),'/'), 1))]",
-
         "host-pool-token-template": "[concat(uri(variables('baseUri'), 'desktopvirtualization-hostpools.json'), variables('sasToken'))]",
         "compute-availabilitysets-template": "[concat(uri(variables('baseUri'), 'compute-availabilitysets.json'), variables('sasToken'))]",
         "network-networkinterfaces-template": "[concat(uri(variables('baseUri'), 'network-networkinterfaces.json'), variables('sasToken'))]",
@@ -155,6 +158,7 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2019-10-01",
             "name": "[variables('availability-set-deployment-name')]",
+            "condition":"[parameters('enableAvSets')]",
             "properties": {
                 "mode": "Incremental",
                 "parameters": {
