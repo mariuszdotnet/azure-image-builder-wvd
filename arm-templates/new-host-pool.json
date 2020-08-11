@@ -181,8 +181,8 @@
             "tags": "[parameters('applicationGroupTags')]",
             "properties": {
                 "hostpoolarmpath": "[resourceId('Microsoft.DesktopVirtualization/hostpools/', parameters('hostpoolName'))]",
-                "friendlyName": "Default Desktop",
-                "description": "Desktop Application Group created through the Hostpool Wizard",
+                "friendlyName": "[parameters('appGroupName')]",
+                "description": "Desktop Application Group created through Az DevOps Pipeline",
                 "applicationGroupType": "Desktop"
             },
             "dependsOn": [
