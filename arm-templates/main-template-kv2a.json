@@ -71,8 +71,12 @@
             "defaultValue": true
         },
         "enableAvSets":{
-            "type": "bool",
-            "defaultValue":false 
+            "type": "string",
+            "defaultValue":"false", 
+            "allowedValues": [
+                "true",
+                "false"
+            ]
         },
         "shared-image-gallery-rg": {
             "type": "string",
@@ -158,7 +162,7 @@
             "type": "Microsoft.Resources/deployments",
             "apiVersion": "2019-10-01",
             "name": "[variables('availability-set-deployment-name')]",
-            "condition":"[parameters('enableAvSets')]",
+            "condition":"[equals(parameters('enableAvSets'),'true')]",
             "properties": {
                 "mode": "Incremental",
                 "parameters": {

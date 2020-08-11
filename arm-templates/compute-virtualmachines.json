@@ -93,8 +93,12 @@
             "type": "string"
         },
         "enableAvSets":{
-            "type": "bool",
-            "defaultValue":false 
+            "type": "string",
+            "defaultValue":"false",
+            "allowedValues":[
+                "true",
+                "false"
+            ] 
         }
     },
     "functions": [],
