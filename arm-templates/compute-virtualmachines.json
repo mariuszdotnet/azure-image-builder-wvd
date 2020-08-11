@@ -91,6 +91,10 @@
         },
         "workspaceId": {
             "type": "string"
+        },
+        "enableAvSets":{
+            "type": "bool",
+            "defaultValue":false 
         }
     },
     "functions": [],
@@ -122,8 +126,8 @@
         {
             "apiVersion": "2019-07-01",
             "type": "Microsoft.Compute/virtualMachines",
-            "name": "[concat(parameters('rdsh-prefix'), copyindex())]",
-            "zones":"[take(skip(variables('zones'),mod(copyIndex(),length(variables('zones')))),1)]",
+            "name": "[concat(parameters('rdsh-prefix'), copyindex(),'-avset')]",
+            "condition":"[equals(parameters('enableAvSets'),'true')]",
             "location": "[resourceGroup().location]",
             "copy": {
                 "name": "rdsh-vm-loop",
@@ -136,6 +140,54 @@
                 },
                 "availabilitySet": {
                     "id": "[variables('availability-set-id')]"
+                },
+                "osProfile": {
+                    "computerName": "[concat(parameters('rdsh-prefix'), copyindex())]",
+                    "adminUsername": "[variables('existing-domain-username')]",
+                    "adminPassword": "[parameters('administrator-account-password')]"
+                },
+                "storageProfile": {
+                    "imageReference": "[if(parameters('use-shared-image'), variables('sharedGalleryImageRef'), variables('win10ImageRef'))]",
+                    "osDisk": {
+                        "createOption": "FromImage",
+                        "managedDisk": {
+                            "storageAccountType": "[parameters('vm-disk-type')]",
+                            "diskEncryptionSet": {
+                                "id": "[parameters('diskEncryptionSetId')]"
+                            }
+                        }
+                    }
+                },
+                "networkProfile": {
+                    "networkInterfaces": [
+                        {
+                            "id": "[resourceId('Microsoft.Network/networkInterfaces',concat(parameters('rdsh-prefix'), copyindex(), '-nic'))]"
+                        }
+                    ]
+                },
+                "diagnosticsProfile": {
+                    "bootDiagnostics": {
+                        "enabled": false
+                    }
+                },
+                "licenseType": "Windows_Client"
+            }
+        },
+                {
+            "apiVersion": "2019-07-01",
+            "type": "Microsoft.Compute/virtualMachines",
+            "condition":"[equals(parameters('enableAvSets'),'false')]",
+            "name": "[concat(parameters('rdsh-prefix'), copyindex())]",
+            "zones":"[take(skip(variables('zones'),mod(copyIndex(),length(variables('zones')))),1)]",
+            "location": "[resourceGroup().location]",
+            "copy": {
+                "name": "rdsh-vm-loop",
+                "count": "[parameters('instance-count')]"
+            },
+            "dependsOn": [],
+            "properties": {
+                "hardwareProfile": {
+                    "vmSize": "[parameters('vm-size')]"
                 },
                 "osProfile": {
                     "computerName": "[concat(parameters('rdsh-prefix'), copyindex())]",

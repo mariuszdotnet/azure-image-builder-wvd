@@ -235,6 +235,9 @@
                     "availability-set-name": {
                         "value": "[concat(variables('rdsh-prefix'),'-avset')]"
                     },
+                    "enableAvSets": {
+                        "value":"[parameters('enableAvSets')]"
+                    },
                     "use-shared-image": {
                         "value": "[parameters('useSharedImage')]"
                     },
