@@ -235,6 +235,7 @@
                 "count": "[parameters('instance-count')]"
             },
             "dependsOn": [
+                "[concat(parameters('rdsh-prefix'), copyindex(),'-avset')]",
                 "[concat(parameters('rdsh-prefix'), copyindex())]"
             ],
             "properties": {
@@ -255,6 +256,7 @@
                 "count": "[parameters('instance-count')]"
             },
             "dependsOn": [
+                "[concat(parameters('rdsh-prefix'), copyindex(),'-avset')]",
                 "[concat(parameters('rdsh-prefix'), copyindex())]"
             ],
             "properties": {
