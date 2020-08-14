@@ -48,3 +48,4 @@ stages:
                   inputs:
                     action: deleteRG
                     resourceGroupName: $(vmResourceGroup)
+                    azureSubscription: ${{ variables.azureConnectionName }}
