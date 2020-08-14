@@ -73,6 +73,7 @@ stages:
         personaId: ${{ parameters.personaId }}
         keyVaultName: ${{ format('{0}-KVL-{1}-{2}', parameters.environment, parameters.personaId, parameters.podId) }}
         podResourceGroup: ${{ parameters.podResourceGroup }}
+        targetContainer: ${{ parameters.targetContainer }}
 
     - template: destroy-host-group-stage.yml
       parameters:

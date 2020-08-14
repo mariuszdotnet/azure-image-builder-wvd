@@ -33,27 +33,6 @@
             "type": "string",
             "defaultValue": "Azureminilab-VNET"
         },
-        "userGroupName": {
-            "type": "string",
-            "defaultValue": "E95@azureminilab.com"
-        },
-        "userGroupObjectId": {
-            "type": "string",
-            "defaultValue": "7a968489-417d-4fec-813b-aa07e9e5e747"
-        },
-
-        "testUserGroupName": {
-            "type": "string",
-            "defaultValue": "e01@azureminilab.com"
-        },
-        "testUserGroupObjectId": {
-            "type": "string",
-            "defaultValue": "e62eb52c-9974-4796-9a10-47d8e781e60b"
-        },
-        "testContainer": {
-            "type": "string",
-            "defaultValue": "green"
-        },
         "RegionCode": {
             "type": "string",
             "metadata": {
@@ -119,7 +98,6 @@
         "secrets-template": "[concat(uri(variables('baseUri'), 'add-secrets.json'), variables('sasToken'))]",
         "wks-template": "[concat(uri(variables('baseUri'), 'new-workspace.json'), variables('sasToken'))]",
         "pod-template": "[concat(uri(variables('baseUri'), 'new-host-pool.json'), variables('sasToken'))]",
-        "pod-user-template": "[concat(uri(variables('baseUri'), 'user-assignment.json'), variables('sasToken'))]",
         "netapp-volume-template": "[concat(uri(variables('baseUri'), 'new-NetApp-volume-2.json'), variables('sasToken'))]",
 
         "fullPodId": "[concat(parameters('persona'),'-',parameters('pod'))]",
@@ -133,8 +111,6 @@
         "wks-deployment": "[concat('WVD-WKS-',variables('fullPodId'),'-',variables('unique_string'))]",
         "blue-pod-container-deployment": "[concat('WVD-POD-Container-BLUE-',variables('fullPodId'),'-',variables('unique_string'))]",
         "green-pod-container-deployment": "[concat('WVD-POD-Container-GREEN-',variables('fullPodId'),'-',variables('unique_string'))]",
-        "user-pod-container-blue-deployment": "[concat('WVD-POD-Containers-BLUE-UsersAssignmt-',variables('fullPodId'),'-',variables('unique_string'))]",
-        "user-pod-container-green-deployment": "[concat('WVD-POD-Containers-GREEN-UsersAssignmt-',variables('fullPodId'),'-',variables('unique_string'))]",
         "netapp-volume-deployment": "[concat('WVD-NetApp-Volume-',variables('fullPodId'),'-',variables('unique_string'))]",
 
         "wvd_location": "eastus2",
@@ -142,19 +118,7 @@
         "appgrp_blue": "[concat(parameters('environment'),'-APG-',variables('fullPodId'),'-BLUE')]",
         "appgrp_green": "[concat(parameters('environment'),'-APG-',variables('fullPodId'),'-GREEN')]",
         "hostpool_blue": "[concat(parameters('environment'),'-HPL-',variables('fullPodId'),'-BLUE')]",
-        "hostpool_green": "[concat(parameters('environment'),'-HPL-',variables('fullPodId'),'-GREEN')]",
-        "user-group-blue": [
-            {
-                "name": "[if(equals('blue', parameters('testContainer')), parameters('testUserGroupName'), parameters('userGroupName'))]",
-                "principalId": "[if(equals('blue', parameters('testContainer')), parameters('testUserGroupObjectId'), parameters('userGroupObjectId'))]"
-            }
-        ],
-        "user-group-green": [
-            {
-                "name": "[if(equals('green', parameters('testContainer')), parameters('testUserGroupName'), parameters('userGroupName'))]",
-                "principalId": "[if(equals('green', parameters('testContainer')), parameters('testUserGroupObjectId'), parameters('userGroupObjectId'))]"
-            }
-        ]
+        "hostpool_green": "[concat(parameters('environment'),'-HPL-',variables('fullPodId'),'-GREEN')]"
     },
     "resources": [
         //Deploy Key Vault for Pod. 
@@ -409,62 +373,6 @@
 
             }
         },
-
-        //Create user assignments for the Application groups (blue and green)
-
-        {
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-06-01",
-            "name": "[variables('user-pod-container-blue-deployment')]",
-            "resourceGroup": "[resourceGroup().name]",
-            "dependsOn": [
-                "[variables('blue-pod-container-deployment')]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "parameters": {
-                    "appGroupName": { "value": "[variables('appgrp_blue')]" },
-                    "location": {
-                        "value": "[variables('wvd_location')]"
-                    },
-                    "roleAssignments": {
-                        "value": "[variables('user-group-blue')]"
-                    }
-                },
-                "templateLink": {
-                    "uri": "[variables('pod-user-template')]",
-                    "contentVersion": "1.0.0.0"
-                }
-
-            }
-        },
-
-        {
-            "type": "Microsoft.Resources/deployments",
-            "apiVersion": "2020-06-01",
-            "name": "[variables('user-pod-container-green-deployment')]",
-            "resourceGroup": "[resourceGroup().name]",
-            "dependsOn": [
-                "[variables('green-pod-container-deployment')]"
-            ],
-            "properties": {
-                "mode": "Incremental",
-                "parameters": {
-                    "appGroupName": { "value": "[variables('appgrp_green')]" },
-                    "location": {
-                        "value": "[variables('wvd_location')]"
-                    },
-                    "roleAssignments": {
-                        "value": "[variables('user-group-green')]"
-                    }
-                },
-                "templateLink": {
-                    "uri": "[variables('pod-user-template')]",
-                    "contentVersion": "1.0.0.0"
-                }
-
-            }
-        },
         {
             "name": "[variables('netapp-volume-deployment')]",
             "type": "Microsoft.Resources/deployments",
@@ -518,6 +426,14 @@
         "green-hostPoolName": {
             "type": "string",
             "value": "[variables('hostpool_green')]"
+        },
+        "blue-appGroupName": {
+            "type": "string",
+            "value": "[variables('appgrp_blue')]"
+        },
+        "green-appGroupName": {
+            "type": "string",
+            "value": "[variables('appgrp_green')]"
         },
         "NetAppVolumeFQDN": {
             "type": "string",

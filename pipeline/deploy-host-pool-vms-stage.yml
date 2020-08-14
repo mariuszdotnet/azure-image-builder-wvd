@@ -15,12 +15,16 @@ stages:
     dependsOn: DeployPod_${{ parameters.podId }}
     displayName: Deploy VMs ${{ parameters.podId}}
     variables:
+      testUserGroup: ROL-WVD-${{parameters.personaId}}-${{parameters.podId}}-TEST-USERS
+
       ${{ if eq( parameters.targetContainer, 'blue') }}:
         hostPoolName: $[stageDependencies.DeployPod_${{ parameters.podId }}.Deploy_ARM_Template.outputs['Output.blue-hostPoolName']]
+        appGroupName: $[stageDependencies.DeployPod_${{ parameters.podId }}.Deploy_ARM_Template.outputs['Output.blue-appGroupName']]
         subnetId: blue-subnet-id
 
       ${{ if eq( parameters.targetContainer, 'green') }}:
         hostPoolName: $[stageDependencies.DeployPod_${{ parameters.podId }}.Deploy_ARM_Template.outputs['Output.green-hostPoolName']]
+        appGroupName: $[stageDependencies.DeployPod_${{ parameters.podId }}.Deploy_ARM_Template.outputs['Output.green-appGroupName']]
         subnetId: green-subnet-id
     jobs:
       - template: deploy-template.yml
@@ -46,3 +50,14 @@ stages:
             - shared-image-gallery-name $(sigName)
             
             # - shared-image-gallery-definition ${{ parameters.personaId }}
+
+          postDeploySteps:
+            - task: AzurePowerShell@4
+              name: AddTestUsers
+              displayName: Add Test Users
+              inputs:
+                scriptType: FilePath
+                azurePowerShellVersion: LatestVersion
+                azureSubscription: $(azureConnectionName)
+                scriptPath: $(Build.Repository.LocalPath)\misc\Add-AppGroupAssignment.ps1
+                scriptArguments: -ResourceGroupName ${{ parameters.podResourceGroup }} -WvdAppGroupName $(appGroupName) -AzureADGroupName $(testUserGroup)

@@ -5,11 +5,13 @@ parameters:
     default: ''
   - name: keyVaultName
   - name: podResourceGroup
+  - name: targetContainer
 
 stages:
   - stage: Swap_Users_${{ parameters.podId }}
     displayName: Swap Users ${{ parameters.podId }}
     dependsOn:
+      - DeployPod_${{ parameters.podId }}
       - Deploy_Host_VMs_${{ parameters.podId }}
     variables:
       - template: vars.yml
@@ -17,6 +19,26 @@ stages:
         value: ${{ parameters.keyVaultName }}
       - name: podResourceGroup
         value: ${{ parameters.podResourceGroup }}
+      - name: prodUserGroup
+        value: ROL-WVD-${{parameters.personaId}}-${{parameters.podId}}-USERS
+      - name: testUserGroup
+        value: ROL-WVD-${{parameters.personaId}}-${{parameters.podId}}-TEST-USERS
+
+      - ${{ if eq( parameters.targetContainer, 'blue') }}:
+        - name: oldContainer
+          value: green
+        - name: newProdAppGroup
+          value: $[stageDependencies.DeployPod_${{ parameters.podId }}.Deploy_ARM_Template.outputs['Output.blue-appGroupName']]
+        - name: oldProdAppGroup
+          value: $[stageDependencies.DeployPod_${{ parameters.podId }}.Deploy_ARM_Template.outputs['Output.green-appGroupName']]
+
+      - ${{ if eq( parameters.targetContainer, 'green') }}:
+        - name: oldContainer
+          value: blue
+        - name: newProdAppGroup
+          value: $[stageDependencies.DeployPod_${{ parameters.podId }}.Deploy_ARM_Template.outputs['Output.green-appGroupName']]
+        - name: oldProdAppGroup
+          value: $[stageDependencies.DeployPod_${{ parameters.podId }}.Deploy_ARM_Template.outputs['Output.blue-appGroupName']]
     jobs:
       - deployment: Swap_App_Group_Users
         displayName: Swap App Group Users
@@ -28,11 +50,31 @@ stages:
                 - checkout: self
                   displayName: Clone Git Repo
                 - task: AzurePowerShell@4
-                  displayName: Swap Users Script
+                  displayName: Add Prod Users to ${{ parameters.targetContainer }}
                   inputs:
                     pwsh: true
                     azureSubscription: ${{ variables.azureConnectionName }}
                     scriptType: filePath
                     azurePowerShellVersion: "LatestVersion"
-                    scriptPath: $(Build.Repository.LocalPath)\misc\Switch-Users-App-Group.ps1
-                    scriptArguments: -VaultName $(keyVaultName) -VaultResourceGroupName $(podResourceGroup) -SubscriptionId $(subscriptionId) -ActiveHostResourceGroupName $(podResourceGroup)
+                    scriptPath: $(Build.Repository.LocalPath)\misc\Add-AppGroupAssignment.ps1
+                    scriptArguments: -ResourceGroupName ${{ parameters.podResourceGroup }} -WvdAppGroupName $(newProdAppGroup) -AzureADGroupName $(prodUserGroup)
+
+                - task: AzurePowerShell@4
+                  displayName: Remove Prod Users from ${{ variables.oldContainer }}
+                  inputs:
+                    pwsh: true
+                    azureSubscription: ${{ variables.azureConnectionName }}
+                    scriptType: filePath
+                    azurePowerShellVersion: "LatestVersion"
+                    scriptPath: $(Build.Repository.LocalPath)\misc\Remove-AppGroupAssignment.ps1
+                    scriptArguments: -ResourceGroupName ${{ parameters.podResourceGroup }} -WvdAppGroupName $(oldProdAppGroup) -AzureADGroupName $(prodUserGroup)
+
+                - task: AzurePowerShell@4
+                  displayName: Remove Test Users from ${{ parameters.targetContainer }}
+                  inputs:
+                    pwsh: true
+                    azureSubscription: ${{ variables.azureConnectionName }}
+                    scriptType: filePath
+                    azurePowerShellVersion: "LatestVersion"
+                    scriptPath: $(Build.Repository.LocalPath)\misc\Remove-AppGroupAssignment.ps1
+                    scriptArguments: -ResourceGroupName ${{ parameters.podResourceGroup }} -WvdAppGroupName $(newProdAppGroup) -AzureADGroupName $(testUserGroup)
